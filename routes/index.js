@@ -2,37 +2,29 @@ var express = require('express');
 var fs = require('fs');
 var request = require('request');
 var router = express.Router();
-var cheerio = require('cheerio');
-
+var scraper = require('table-scraper');
 var url = "http://wiki.hacman.org.uk/Snackspace";
-var tablesOfInterest = ["Drinks", "Food"];
+
+var tableData = [];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
     //load page
-    request(url, function(error, response, html){
-        if(!error){
-            var $ = cheerio.load(html);
+    scraper
+        .get(url)
+        .then(function(data) {
 
-            $('.wikitable').filter(function(){
-                var data = $(this);
-                var title = data.children().first().text();
+            tableData = data;
+            tableData.forEach(function(table){
 
-                if(tablesOfInterest.indexOf(title) !== false){
 
-                    data.each(function(index, row){
-                        console.log(row.children().first().text());
-                    })
-                }
-
-                //release = data.children().last().children().text();
             });
 
+            tableData.splice(tableData.length -2, 2);
 
-            res.render('index', { title: 'Express' });
-        }
-    })
+            res.render('index', { title: 'Express', tableData: tableData });
+        });
 
 
 
@@ -45,7 +37,5 @@ router.get('/', function(req, res, next) {
 
 
 });
-
-
 
 module.exports = router;

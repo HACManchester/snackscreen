@@ -2,10 +2,66 @@
 <html>
   <head>
     <title><%= title %></title>
+    <link rel='stylesheet' href='/css/bootstrap.css' />
+    <script src='/js/jquery.js'></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+
+  <div class="container">
+    <h1>SnackScreen</h1>
+
+
+
+    <% tableData.forEach(function(table, i) { %>
+    <div class="table table<%=i+1 %>">
+      <h2>Snacks and Drinks <%=i+1 %>/<%=tableData.length %></h2>
+      <% table.forEach(function(item) { %>
+        <div class="row">
+          <div class="col-md-6 item desc"><%= item[0] %></div>
+          <div class="col-md-6 item price"><%= item[1] %></div>
+        </div>
+      <% }); %>
+    </div>
+    <% }); %>
+
+  </div>
+
+
+  <script>
+      $(function() {
+
+          var current = 0;
+          var total = $(".table").length;
+
+          incrementTable();
+
+          function incrementTable(){
+
+              if(current == total){
+                  console.log("reset");
+                  current = 0;
+              }
+
+
+              $(".table").hide(function(){
+                  $(".table" + (current)).show();
+              });
+
+              current ++;
+
+
+
+              setTimeout(function(){
+                  incrementTable();
+              }, 5000);
+          }
+
+      });
+
+
+
+
+  </script>
   </body>
 </html>
