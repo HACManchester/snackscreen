@@ -27,41 +27,29 @@
 
   </div>
 
-
   <script>
-      $(function() {
-
-          var current = 0;
-          var total = $(".table").length;
-
-          incrementTable();
-
-          function incrementTable(){
-
-              if(current == total){
+      jQuery(function($) {
+          var current = 0,
+              table = $('.table'),
+              total = table.length,
+              incementTable;
+              
+          incementTable = function(){
+              if(current === total){
                   console.log("reset");
                   current = 0;
               }
-
-
-              $(".table").hide(function(){
-                  $(".table" + (current)).show();
+              table.hide(function() {
+                table.filter('.table' + current).show();
               });
 
               current ++;
 
+              setTimeout(incrementTable, 5000);
+          };
 
-
-              setTimeout(function(){
-                  incrementTable();
-              }, 5000);
-          }
-
+          incrementTable();
       });
-
-
-
-
   </script>
   </body>
 </html>
